@@ -46,11 +46,45 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //CHALLENGE 1: GET All posts (http://localhost:4000/posts)
 app.get('/posts', async (req, res) => {
-  // send the array of posts in the response to the front end
+  // send the array of posts in the response (in this case, to server.js)
   res.json(posts);
 });
 
-//CHALLENGE 2: GET a specific post by id
+//CHALLENGE 2: GET a specific post by id (http://localhost:4000/posts/:id)
+app.get('/posts/:id', async (req, res) => {
+  // retrieve the id from the query parameters
+  let id = req.params.id;
+  console.log(`typeof(${id}) = `, typeof id);
+  id = Number(id);
+  console.log(`typeof(${id}) = `, typeof id);
+  if (Number.isNaN(id)) {
+    // id is not a number, throw an error
+    res.send({
+      error: `${id} is not a number. Please enter a numeric value for the post's id.`,
+    });
+  } else {
+    // variable that will store the post with the specified id (if found)
+    let postById;
+    for(let i = 0; i < posts.length; i++){
+      if(posts[i].id === id){
+        // store the post with specified id in the postById variable
+        postById = posts[i];
+        break;
+      }
+    }
+    if(typeof postById === 'undefined'){
+      // No post with the specified id exists
+      res.json({
+        error: `There is no post with id = ${id}`
+      })
+    } else {
+      // send the post with id = id in the response
+      res.json(postById);
+    }
+  }
+
+
+})
 
 //CHALLENGE 3: POST a new post
 
