@@ -134,7 +134,104 @@ app.post("/posts", async (req, res) => {
   }
 });
 
-//CHALLENGE 4: PATCH a post when you just want to update one parameter
+//CHALLENGE 4: PATCH a post when you just want to update one parameter (http://localhost:4000/posts/:id)
+app.patch("/posts/:id", async (req, res) => {
+  // updates the post with the specified id
+  // retrieve the id from the query parameters
+  let id = req.params.id;
+  console.log(`typeof(${id}) = `, typeof id);
+  id = Number(id);
+  console.log(`typeof(${id}) = `, typeof id);
+
+  if (Number.isNaN(id)) {
+    // id is not a number, throw an error
+    res.send({
+      error: `${id} is not a number. Please enter a numeric value for the id.`,
+    });
+  } else {
+    if (Object.keys(req.body).length === 0) {
+      // for some reason, the content for the blog was not in the body of the request
+      res.json({
+        error: `PATCH /posts/${id}: add some text to update this blog post.`,
+      });
+    }
+    // check to see if 'title', 'content', or 'author' are in the body of the request
+    else if (
+      req.body.hasOwnProperty("title") ||
+      req.body.hasOwnProperty("content") ||
+      req.body.hasOwnProperty("author")
+    ) {
+      // debugging purposes
+      let body = req.body;
+      console.log("request's body = ", body);
+
+      if (
+        (typeof req.body.title !== "string" ||
+          req.body.title.trim().length === 0) &&
+        (typeof req.body.content !== "string" ||
+          req.body.content.trim().length === 0) &&
+        (typeof req.body.author !== "string" || req.body.author.trim() === 0)
+      ) {
+        // the text AND the title, content, & author are ALL empty strings
+        res.send({
+          error: `PATCH: /jokes/${id}: Please add a \'title\' OR some \'content\' OR an \'author\' for the post with id = ${id} so it can be updated.`,
+        });
+      } else {
+        // variable that will store the post with the specified id (if found)
+        let postById;
+        for (let i = 0; i < posts.length; i++) {
+          if (posts[i].id === id) {
+            // store the post with specified id in the postById variable
+            postById = posts[i];
+            break;
+          }
+        }
+
+        console.log("PATCH: postById = ", postById);
+
+        // check to see if a joke with that id actually exists
+        if (typeof postById === "undefined") {
+          res.json({
+            error: `Can't update post with id ${id} because it does not exist.`,
+          });
+        } else {
+          // In a real application, the postById's new fields would be sent to the database but this "applictaion"
+          // has no database so I'll just "modify" all the fields in postById.
+
+          // update postById's text and type
+
+          // Edge cases for scenarios where a user updates the title OR the content OR the author,
+          // only the tile OR the author OR the content fields exists.
+          // check to see if 'title' field exists
+          if (typeof req.body.title !== "undefined") {
+            // only update the title if it's not an empty string
+            if (req.body.title.trim().length !== 0) {
+              postById.title = req.body.title;
+            }
+          }
+          // check to see if content field exists
+          if (typeof req.body.content !== "undefined") {
+            // update the content if it's not an empty string
+            if (req.body.content.trim().length !== 0) {
+              postById.content = req.body.content;
+            }
+          }
+
+          // check to see if author field exists
+          if (typeof req.body.author !== "undefined") {
+            // update the content if it's not an empty string
+            if (req.body.author.trim().length !== 0) {
+              postById.author = req.body.author;
+            }
+          }
+
+          // return the post with id = id
+          res.send(postById);
+        }
+      }
+    }
+  }
+});
 
 //CHALLENGE 5: DELETE a specific post by providing the post id. (http://localhost:4000/posts/:id)
 app.delete("/posts/:id", async (req, res) => {
@@ -161,7 +258,7 @@ app.delete("/posts/:id", async (req, res) => {
       res.status(200).send("OK");
     } else {
       // no joke with the specifed id
-      res.send({
+      res.json({
         error: `Can't delete post with id ${id} because it does not exist.`,
       });
     }
