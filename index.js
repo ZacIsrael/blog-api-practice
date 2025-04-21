@@ -4,6 +4,10 @@ import bodyParser from "body-parser";
 const app = express();
 const port = 4000;
 
+// Set EJS as the templating engine
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+
 // In-memory data store
 let posts = [
   {
@@ -40,7 +44,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //Write your code here//
 
-//CHALLENGE 1: GET All posts
+//CHALLENGE 1: GET All posts (http://localhost:4000/posts)
+app.get('/posts', async (req, res) => {
+  // send the array of posts in the response to the front end
+  res.json(posts);
+});
 
 //CHALLENGE 2: GET a specific post by id
 
