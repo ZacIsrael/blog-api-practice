@@ -86,51 +86,52 @@ app.get("/posts/:id", async (req, res) => {
 
 //CHALLENGE 3: POST a new post (http://localhost:4000/posts)
 app.post("/posts", async (req, res) => {
-  // debugging 
-  console.log('req.body = ', req.body);
+  // debugging
+  console.log("req.body = ", req.body);
 
-  // check to see if the necessary feilds (title, contant, & author) 
+  // check to see if the necessary feilds (title, contant, & author)
   // are in the request object
-  if(Object.keys(req.body).length === 0){
+  if (Object.keys(req.body).length === 0) {
     res.json({
-      error: `POST /posts: title, content, & author not sent in the request for the newly created post.`
+      error: `POST /posts: title, content, & author not sent in the request for the newly created post.`,
     });
   }
   // check if "title", "content", & "author" are in the body
-  else if(req.body.hasOwnProperty("title") && req.body.hasOwnProperty("content") && req.body.hasOwnProperty("author")){
-
-    if(req.body.title.trim().length === 0 || req.body.content.trim().length === 0 || req.body.author.trim().length === 0){
+  else if (
+    req.body.hasOwnProperty("title") &&
+    req.body.hasOwnProperty("content") &&
+    req.body.hasOwnProperty("author")
+  ) {
+    if (
+      req.body.title.trim().length === 0 ||
+      req.body.content.trim().length === 0 ||
+      req.body.author.trim().length === 0
+    ) {
       // at least 1 of the 3 necessary fields to create a new post is an empty string
       res.json({
-        error: `POST /posts: Add a title AND some content AND an author for the newly created post.`
+        error: `POST /posts: Add a title AND some content AND an author for the newly created post.`,
       });
-
-
     } else {
+      let newPost = {
+        // in a real application, the database would randomly generate the id
+        id: posts.length + 1,
+        title: req.body.title,
+        content: req.body.content,
+        author: req.body.author,
+      };
 
-    let newPost = {
-      // in a real application, the database would randomly generate the id
-      id : posts.length + 1,
-      title: req.body.title,
-      content: req.body.content,
-      author: req.body.author
+      // In a real application, the newPost would be sent to the database but this "applictaion"
+      // has no database so I'll "append" it to the posts array.
+      posts.push(newPost);
+      // send the newly created post in the response
+      res.json(newPost);
     }
-
-    // In a real application, the newPost would be sent to the database but this "applictaion" 
-    // has no database so I'll "append" it to the posts array.
-    posts.push(newPost);
-    // send the newly created post in the response
-    res.json(newPost)
-
-  }
   } else {
-    // 
+    //
     res.json({
-      error: `POST /posts: Add a title, some content, & an author's name to the post you would like to add`
-    })
+      error: `POST /posts: Add a title, some content, & an author's name to the post you would like to add`,
+    });
   }
-
-
 });
 
 //CHALLENGE 4: PATCH a post when you just want to update one parameter
