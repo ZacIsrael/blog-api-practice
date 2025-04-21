@@ -136,7 +136,37 @@ app.post("/posts", async (req, res) => {
 
 //CHALLENGE 4: PATCH a post when you just want to update one parameter
 
-//CHALLENGE 5: DELETE a specific post by providing the post id.
+//CHALLENGE 5: DELETE a specific post by providing the post id. (http://localhost:4000/posts/:id)
+app.delete("/posts/:id", async (req, res) => {
+  // retrieve the id from the query parameters
+  let id = req.params.id;
+  console.log(`typeof(${id}) = `, typeof id);
+  id = Number(id);
+  console.log(`typeof(${id}) = `, typeof id);
+  if (Number.isNaN(id)) {
+    // id is not a number, throw an error
+    res.send({
+      error: `${id} is not a number. Please enter a numeric value for the post's id.`,
+    });
+  } else {
+    // remove the post with the specified id
+    // findIndex() returns the index of the post with the specified id; if -1 is returned,
+    // then that means that there is no element in the array with that id
+    const index = posts.findIndex((post) => post.id === id);
+
+    if (index !== -1) {
+      // post with specified exists
+      // remove the post with the specified id
+      posts.splice(index, 1);
+      res.status(200).send("OK");
+    } else {
+      // no joke with the specifed id
+      res.send({
+        error: `Can't delete post with id ${id} because it does not exist.`,
+      });
+    }
+  }
+});
 
 app.listen(port, () => {
   console.log(`API is running at http://localhost:${port}`);
