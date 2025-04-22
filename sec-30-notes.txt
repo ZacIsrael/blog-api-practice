@@ -1,0 +1,68 @@
+﻿Section 30: Build Your Own API
+Building your own APIs:
+* What is Rapid API?
+   * https://rapidapi.com/hub
+   * a platform that helps developers find, connect to, and manage APIs (Application Programming Interfaces) all in one place; like the "App Store" for APIs.
+* What makes an API monetizable? 
+   * Valuable Functionality or Data
+      * The API must solve a real problem, save time, or provide exclusive data; If developers would otherwise have to build or scrape it themselves — that’s value.
+      * Examples:
+         * 🧠 AI/ML APIs (e.g. sentiment analysis, image recognition)
+         * 📈 Financial or stock market data
+         * 🌎 Location or weather data
+         * 🔎 Text analysis or search APIs
+         * 📧 Email or phone number validation
+         * 🧾 PDF generation, OCR, etc.
+   * Reliable & Consistent
+      * Monetizable APIs must be:
+         * Always available (high uptime)
+         * Fast (low latency)
+         * Secure (proper authentication)
+         * Well-documented (so other developers know how to use it)
+   * Tiered Pricing Models:
+      * Offer different usage plans to attract both:
+         * Casual users (free tier)
+         * Heavy/enterprise users (paid tiers)
+      * Example:
+         * Free: 100 requests/month
+         * $10/month: 10,000 requests/month
+         * $99/month: 1,000,000 requests/month
+* Internal APIs vs External APIs:
+   * Internal API:
+      * An API that is used only within an organization. It connects internal systems, services, or teams — not meant for public access.
+      * Examples:
+         * A company's HR web app talks to a payroll service via an internal API.
+         * An e-commerce backend API that powers the admin dashboard.
+      * Key Traits:
+         * Access is restricted (behind authentication or internal firewalls).
+         * Typically undocumented for outsiders.
+         * Used to boost efficiency, automation, and system integration inside a business.
+   * External API:
+      * An API that is available to outside developers, third parties, or the public to build apps or services that integrate with your platform.
+      * Examples:
+         * Google Maps API (developers use it to embed maps).
+         * Twitter API (used to fetch tweets or post content).
+         * Stripe API (for payment processing).
+      * Key Traits:
+         * Publicly documented and often versioned.
+         * Has rate limits, API keys, and terms of use.
+         * Used to expand platform reach and enable third-party development.
+* REST APIs:
+   * Representational State Transfer Application Programming Interface.
+   * a standard way to let different software systems talk to each other over HTTP, usually in a client-server model (e.g., frontend talks to backend).
+   * Key Principles:
+      * Stateless: No client context is stored on the server. Each request is independent.
+      * Client-Server: The frontend (client) and backend (server) are separate.
+      * Cacheable: Responses can be cached to improve performance
+      * Uniform Interface: Standardized ways to interact (i.e. via HTTP methods like GET, POST, etc.)
+      * Layered System: Architecture can have layers (i.e. load balancers, security layers, etc.
+      * Standard data format for Responses: Typically JSON
+      * Resource Based: centered around resources; used a uniform resource identifier (URI) or universal resource locator (URL) in order to locate specific resources 
+      * Code on Demand (optional): Servers can send executable code to clients (rare in practice).
+   * How do they work? Typically built using HTTP to perform CRUD (Create, Read, Update, Delete) operations:
+      * GET: Read; Fetch data (e.g., GET /users)
+      * POST: Create; Add new data (e.g., POST /users)
+      * PUT: Update; Replace existing data (e.g., PUT /users/123)
+      * PATCH: Modify; Partially update data (e.g., PATCH /users/123)
+      * DELETE: Delete; Remove data (e.g., DELETE /users/123)
+      * Usually, a JSON response is returned
